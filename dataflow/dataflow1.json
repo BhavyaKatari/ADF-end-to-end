@@ -41,7 +41,7 @@
 				"     df_parameter as string",
 				"}",
 				"source(output(",
-				"          cid as short,",
+				"          cid as integer,",
 				"          cname as string,",
 				"          clocation as string",
 				"     ),",
