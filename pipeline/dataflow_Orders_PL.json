@@ -1,9 +1,9 @@
 {
-	"name": "dataflow_cust",
+	"name": "dataflow_Orders_PL",
 	"properties": {
 		"activities": [
 			{
-				"name": "Dataflow_Cust",
+				"name": "Data flow1",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,17 +16,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "dataflow_orders",
 						"type": "DataFlowReference",
-						"parameters": {
-							"df_parameter": {
-								"value": "'@{utcNow()}'",
-								"type": "Expression"
-							}
-						},
 						"datasetParameters": {
 							"source1": {
-								"cpdate": {
+								"sourcedate": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"sinkdate": {
 									"value": "@utcNow()",
 									"type": "Expression"
 								}
@@ -41,8 +41,6 @@
 				}
 			}
 		],
-		"annotations": [],
-		"lastPublishTime": "2026-01-21T05:13:56Z"
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		"annotations": []
+	}
 }

@@ -1,0 +1,44 @@
+{
+	"name": "DS_orders_sourcedataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_gen2stagelayer",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sourcedate": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "orders/@{formatDateTime(dataset().sourcedate,'yyyy')}/@{formatDateTime(dataset().sourcedate,'MM')}/@{formatDateTime(dataset().sourcedate,'dd')}",
+					"type": "Expression"
+				},
+				"fileSystem": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "oid",
+				"type": "String"
+			},
+			{
+				"name": "ordername",
+				"type": "String"
+			},
+			{
+				"name": "cid",
+				"type": "String"
+			}
+		]
+	}
+}
