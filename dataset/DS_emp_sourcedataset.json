@@ -1,0 +1,44 @@
+{
+	"name": "DS_emp_sourcedataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_gen2stagelayer",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sourcedate": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "emp/@{formatDateTime(dataset().sourcedate,'yyyy')}/@{formatDateTime(dataset().sourcedate,'MM')}/@{formatDateTime(dataset().sourcedate,'dd')}",
+					"type": "Expression"
+				},
+				"fileSystem": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "empid",
+				"type": "String"
+			},
+			{
+				"name": "empname",
+				"type": "String"
+			},
+			{
+				"name": "empsalary",
+				"type": "String"
+			}
+		]
+	}
+}
