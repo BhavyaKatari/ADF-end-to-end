@@ -206,6 +206,62 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_dataflow_disc')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_discounts",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"sourcedate": {
+											"value": "@utcNow()",
+											"type": "Expression"
+										}
+									},
+									"sink1": {
+										"sinkdate": {
+											"value": "@utcNow()",
+											"type": "Expression"
+										}
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_discounts')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_sql_gen2bronze')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -450,6 +506,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_Disc_sourcedataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_gen2stagelayer",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sourcedate": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "discounts/@{formatDateTime(dataset().sourcedate,'yyyy')}/@{formatDateTime(dataset().sourcedate,'MM')}/@{formatDateTime(dataset().sourcedate,'dd')}",
+							"type": "Expression"
+						},
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "cid",
+						"type": "String"
+					},
+					{
+						"name": "discount",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_gen2stagelayer')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_cust_sinkdataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -475,6 +576,55 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_gen2stagelayer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_disc_sinkdataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_gen2stagelayer",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sinkdate": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@concat('discounts/', formatDateTime(utcNow(), 'YYYY'), '/' ,formatDateTime(utcNow(), 'MM'), '/' , formatDateTime(utcNow(), 'dd'))",
+							"type": "Expression"
+						},
+						"fileSystem": "silver"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "cid",
+						"type": "String"
+					},
+					{
+						"name": "cname",
+						"type": "String"
+					},
+					{
+						"name": "clocation",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_gen2stagelayer')]"
@@ -955,6 +1105,67 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_gen2_bronzedata')]",
 				"[concat(variables('factoryId'), '/datasets/DS_cust_sinkdataset')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_gen2stagelayer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_discounts')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Disc_sourcedataset",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_disc_sinkdataset",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "LS_gen2stagelayer",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          cid as integer,",
+						"          discount as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     partitionBy('hash', 1)) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          cid as string,",
+						"          cname as string,",
+						"          clocation as string",
+						"     ),",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Disc_sourcedataset')]",
+				"[concat(variables('factoryId'), '/datasets/DS_disc_sinkdataset')]",
 				"[concat(variables('factoryId'), '/linkedServices/LS_gen2stagelayer')]"
 			]
 		},
