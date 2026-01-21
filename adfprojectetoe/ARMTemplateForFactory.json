@@ -388,7 +388,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"folderPath": {
-							"value": "bronze/cust/@{formatDateTime(dataset().cpdate,'yyyy')}/@{formatDateTime(dataset().cpdate,'MM')}/@{formatDateTime(dataset().cpdate,'dd')}",
+							"value": "cust/@{formatDateTime(dataset().cpdate,'yyyy')}/@{formatDateTime(dataset().cpdate,'MM')}/@{formatDateTime(dataset().cpdate,'dd')}",
 							"type": "Expression"
 						},
 						"fileSystem": "bronze"
@@ -609,7 +609,7 @@
 						"     df_parameter as string",
 						"}",
 						"source(output(",
-						"          cid as short,",
+						"          cid as integer,",
 						"          cname as string,",
 						"          clocation as string",
 						"     ),",
