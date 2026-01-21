@@ -5,8 +5,20 @@
 		"factoryName": {
 			"value": "adfprojectetoe"
 		},
+		"LS_AzureSynapseAnalytics_password": {
+			"value": ""
+		},
 		"LS_azuresqlserver_password": {
 			"value": ""
+		},
+		"LS_AzureSynapseAnalytics_properties_typeProperties_server": {
+			"value": "testserveradfbk.database.windows.net"
+		},
+		"LS_AzureSynapseAnalytics_properties_typeProperties_database": {
+			"value": "adfdatawarehousesql"
+		},
+		"LS_AzureSynapseAnalytics_properties_typeProperties_userName": {
+			"value": "Bhavya"
 		},
 		"LS_Azurekeyvault_properties_typeProperties_baseUrl": {
 			"value": "https://adfprjctkeyvault.vault.azure.net/"
