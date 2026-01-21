@@ -30,12 +30,6 @@
 									"value": "@utcNow()",
 									"type": "Expression"
 								}
-							},
-							"sink1": {
-								"sinkdataset": {
-									"value": "@utcNow()",
-									"type": "Expression"
-								}
 							}
 						}
 					},

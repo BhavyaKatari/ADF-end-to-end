@@ -5,11 +5,6 @@
 			"referenceName": "LS_gen2stagelayer",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"sinkdataset": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
