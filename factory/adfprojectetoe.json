@@ -1,0 +1,9 @@
+{
+	"name": "adfprojectetoe",
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b3afe9bf-9ba1-476b-8551-d6406e38689e",
+		"tenantId": "d637c4d5-9123-4e09-aae4-95118cf496e4"
+	}
+}
