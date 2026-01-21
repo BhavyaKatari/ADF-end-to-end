@@ -156,11 +156,6 @@
 					"referenceName": "LS_gen2stagelayer",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"sinkdataset": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -203,7 +198,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"folderPath": {
-							"value": "cust/@{formatDateTime(dataset().cpdate,'yyyy')}/@{formatDateTime(dataset().cpdate,'MM')}/@{formatDateTime(dataset().cpdate,'dd')}",
+							"value": "bronze/cust/@{formatDateTime(dataset().cpdate,'yyyy')}/@{formatDateTime(dataset().cpdate,'MM')}/@{formatDateTime(dataset().cpdate,'dd')}",
 							"type": "Expression"
 						},
 						"fileSystem": "bronze"
@@ -633,12 +628,7 @@
 											"type": "Expression"
 										}
 									},
-									"sink1": {
-										"sinkdataset": {
-											"value": "@utcNow()",
-											"type": "Expression"
-										}
-									}
+									"sink1": {}
 								}
 							},
 							"staging": {},
