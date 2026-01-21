@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfprojectetoe"
+		},
+		"LS_azuresqlserver_password": {
+			"value": ""
+		},
+		"LS_Azurekeyvault_properties_typeProperties_baseUrl": {
+			"value": "https://adfprjctkeyvault.vault.azure.net/"
+		},
+		"LS_azuresqlserver_properties_typeProperties_server": {
+			"value": "testserveradf.database.windows.net"
+		},
+		"LS_azuresqlserver_properties_typeProperties_database": {
+			"value": "testdb"
+		},
+		"LS_azuresqlserver_properties_typeProperties_userName": {
+			"value": "Bhavya"
+		},
+		"LS_gen2stagelayer_properties_typeProperties_url": {
+			"value": "https://staginglayrgen2.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
