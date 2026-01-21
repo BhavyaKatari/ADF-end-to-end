@@ -1,0 +1,44 @@
+{
+	"name": "DS_gold_gen2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_gen2stagelayer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "dimcust",
+				"fileSystem": "gold"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "cid",
+				"type": "String"
+			},
+			{
+				"name": "cname",
+				"type": "String"
+			},
+			{
+				"name": "clocation",
+				"type": "String"
+			},
+			{
+				"name": "oid",
+				"type": "String"
+			},
+			{
+				"name": "ordername",
+				"type": "String"
+			}
+		]
+	}
+}
